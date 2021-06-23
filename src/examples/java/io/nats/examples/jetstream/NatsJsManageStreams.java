@@ -47,12 +47,17 @@ public class NatsJsManageStreams {
     private static final String SUBJECT4 = "manage-subject4";
 
     public static void main(String[] args) {
+        args = "-s hpcargo:4222".split(" ");
         ExampleArgs exArgs = ExampleUtils.optionalServer(args, usageString);
 
         try (Connection nc = Nats.connect(ExampleUtils.createExampleOptions(exArgs.server))) {
 
             // Create a JetStreamManagement context.
             JetStreamManagement jsm = nc.jetStreamManagement();
+
+            System.out.println("----------\n0. getStreamNames");
+            List<StreamInfo> streamInfos = jsm.getStreams();
+            NatsJsUtils.printStreamInfoList(streamInfos);
 
             // 1. Create (add) a stream with a subject
             // -  Full configuration schema:
@@ -66,7 +71,7 @@ public class NatsJsManageStreams {
                     // .maxBytes(...)
                     // .maxAge(...)
                     // .maxMsgSize(...)
-                    .storageType(StorageType.Memory)
+                    .storageType(StorageType.File)
                     // .replicas(...)
                     // .noAck(...)
                     // .template(...)
@@ -110,7 +115,7 @@ public class NatsJsManageStreams {
             printObject(streamNames);
 
             System.out.println("----------\n4.2 getStreamNames");
-            List<StreamInfo> streamInfos = jsm.getStreams();
+            streamInfos = jsm.getStreams();
             NatsJsUtils.printStreamInfoList(streamInfos);
 
             // 5. Purge a stream of it's messages
