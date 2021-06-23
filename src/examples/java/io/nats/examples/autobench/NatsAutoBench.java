@@ -45,7 +45,7 @@ public class NatsAutoBench {
 
     public static void main(String[] args) {
 
-        args = (ExampleArgs.hpcargo_str + "PubSub").split(" ");
+        // args = (ExampleArgs.hpcargo_str + "PubSub").split(" ");
         
         // TO RUN WITH ARGS FROM IDE, ADD A LINE LIKE THESE
         // args = "myhost:4222 med".split(" ");
@@ -54,6 +54,7 @@ public class NatsAutoBench {
         // args = "help".split(" ");
         // args = "latency large".split(" ");
 
+        // System.out.println(usageString);
         Arguments a = readArgs(args);
 
         System.out.printf("Connecting to NATS server at %s\n", a.server);
