@@ -14,6 +14,7 @@
 package io.nats.examples.autobench;
 
 import io.nats.client.Options;
+import io.nats.examples.ExampleArgs;
 
 import javax.net.ssl.SSLContext;
 import java.security.Provider;
@@ -44,6 +45,8 @@ public class NatsAutoBench {
 
     public static void main(String[] args) {
 
+        args = (ExampleArgs.hpcargo_str + "PubSub").split(" ");
+        
         // TO RUN WITH ARGS FROM IDE, ADD A LINE LIKE THESE
         // args = "myhost:4222 med".split(" ");
         // args = "small PubOnly".split(" ");

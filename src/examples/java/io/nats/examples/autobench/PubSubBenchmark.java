@@ -25,7 +25,7 @@ public class PubSubBenchmark extends ThrottledBenchmark {
     }
 
     void executeWithLimiter(Options connectOptions) throws InterruptedException {
-        byte[] payload = createPayload();
+        byte[] payload = createPayload(); // 64 bytes '0', default
         String subject = getSubject();
 
         final CompletableFuture<Void> go = new CompletableFuture<>();
