@@ -58,7 +58,7 @@ public class NatsJsPullSubBatchSize {
         ExampleArgs exArgs = ExampleArgs.builder()
                 .defaultStream(STREAM1)
                 .defaultSubject(SUBJECT1)
-                .defaultDurable("pull-durable-merry")
+                .defaultDurable("pull-durable-warm")
                 .defaultMsgCount(99)
                 //.uniqueify() // uncomment to be able to re-run without re-starting server
                 .build(args, usageString);
