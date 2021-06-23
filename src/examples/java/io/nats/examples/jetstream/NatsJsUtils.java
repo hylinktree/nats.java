@@ -157,7 +157,8 @@ public class NatsJsUtils {
             }
             Message msg = NatsMessage.builder()
                     .subject(subject)
-                    .data(data.getBytes(StandardCharsets.US_ASCII))
+                    // .data(data.getBytes(StandardCharsets.US_ASCII))
+                    .data(data.getBytes(StandardCharsets.UTF_8)) // hychu
                     .build();
             js.publish(msg);
         }
