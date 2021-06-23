@@ -47,7 +47,7 @@ public class NatsJsManageStreams {
     private static final String SUBJECT4 = "manage-subject4";
 
     public static boolean _purge = false;
-    public static StorageType _jet_typ = StorageType.Memory;
+    public static StorageType _jet_typ = StorageType.File;
     public static void main(String[] args) {
         // args = "-s hpcargo:4222".split(" ");
         args = ExampleArgs.hpcargo_args;
@@ -123,7 +123,7 @@ public class NatsJsManageStreams {
             // 4.1 getStreamInfo on a specific stream
             // 4.2 get a list of all streams
             // 4.3 get a list of StreamInfo's for all streams
-            int num = 1000;
+            int num = 10000;
             
             Long ta = System.currentTimeMillis();
             System.out.println("----------\n4.1 getStreamInfo " + Integer.toString(num));
