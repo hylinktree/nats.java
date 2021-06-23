@@ -34,6 +34,13 @@ import static io.nats.examples.jetstream.NatsJsUtils.publishDontWait;
  *   Use the URL for user/pass/token authentication.
  */
 public class NatsJsPullSubBatchSize {
+    private static final String STREAM1 = "manage-stream1";
+    private static final String STREAM2 = "manage-stream2";
+    private static final String SUBJECT1 = "manage-subject1";
+    private static final String SUBJECT2 = "manage-subject2";
+    private static final String SUBJECT3 = "manage-subject3";
+    private static final String SUBJECT4 = "manage-subject4";
+
     static final String usageString =
             "\nUsage: java -cp <classpath> NatsJsPullSubBatchSize [-s server] [-strm stream] [-sub subject] [-dur durable] [-mcnt msgCount]"
                     + "\n\nDefault Values:"
@@ -47,22 +54,23 @@ public class NatsJsPullSubBatchSize {
                     + "\nUse the URL for user/pass/token authentication.\n";
 
     public static void main(String[] args) {
+        args = ExampleArgs.hpcargo_args;
         ExampleArgs exArgs = ExampleArgs.builder()
-                .defaultStream("pull-stream")
-                .defaultSubject("pull-subject")
+                .defaultStream(STREAM1)
+                .defaultSubject(SUBJECT1)
                 .defaultDurable("pull-durable")
                 .defaultMsgCount(99)
                 //.uniqueify() // uncomment to be able to re-run without re-starting server
                 .build(args, usageString);
 
         try (Connection nc = Nats.connect(ExampleUtils.createExampleOptions(exArgs.server))) {
-            createStreamThrowWhenExists(nc, exArgs.stream, exArgs.subject);
+            // createStreamThrowWhenExists(nc, exArgs.stream, exArgs.subject);
 
             // Create our JetStream context to receive JetStream messages.
             JetStream js = nc.jetStream();
 
             // start publishing the messages, don't wait for them to finish, simulating an outside producer
-            publishDontWait(js, exArgs.subject, "pull-message", exArgs.msgCount);
+            // publishDontWait(js, exArgs.subject, "pull-message", exArgs.msgCount);
 
             // Build our subscription options. Durable is REQUIRED for pull based subscriptions
             PullSubscribeOptions pullOptions = PullSubscribeOptions.builder()

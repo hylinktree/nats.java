@@ -46,8 +46,10 @@ public class NatsJsManageStreams {
     private static final String SUBJECT3 = "manage-subject3";
     private static final String SUBJECT4 = "manage-subject4";
 
+    public static boolean _purge = false;
     public static void main(String[] args) {
-        args = "-s hpcargo:4222".split(" ");
+        // args = "-s hpcargo:4222".split(" ");
+        args = ExampleArgs.hpcargo_args;
         ExampleArgs exArgs = ExampleUtils.optionalServer(args, usageString);
 
         try (Connection nc = Nats.connect(ExampleUtils.createExampleOptions(exArgs.server))) {
@@ -57,15 +59,16 @@ public class NatsJsManageStreams {
 
             System.out.println("----------\n0. getStreamNames");
             List<StreamInfo> streamInfos = jsm.getStreams();
-            List<String> streamtitles = new ArrayList<String>();
             NatsJsUtils.printStreamInfoList(streamInfos);
 
-            for (StreamInfo si : streamInfos) {
-                streamtitles.add(si.getConfiguration().getName());
-            }
+            // List<String> streamtitles = new ArrayList<String>();
+            // for (StreamInfo si : streamInfos) {
+            //     streamtitles.add(si.getConfiguration().getName());
+            // }
+            List<String> streamNames = jsm.getStreamNames();
             StreamConfiguration streamConfig;
             StreamInfo streamInfo;
-            if (!streamtitles.contains(STREAM1)) {
+            if (!streamNames.contains(STREAM1)) {
 
                 // 1. Create (add) a stream with a subject
                 // - Full configuration schema:
@@ -101,7 +104,7 @@ public class NatsJsManageStreams {
                 NatsJsUtils.printStreamInfo(streamInfo);
             }
 
-            if (!streamtitles.contains(STREAM2)) {
+            if (!streamNames.contains(STREAM2)) {
                 // 3. Create (add) another stream with 2 subjects
                 System.out.println("----------\n3. Configure And Add Stream 2");
                 streamConfig = StreamConfiguration.builder() //
@@ -124,13 +127,15 @@ public class NatsJsManageStreams {
             streamInfo = jsm.getStreamInfo(STREAM1);
             NatsJsUtils.printStreamInfo(streamInfo);
 
-            System.out.println("----------\n4.2 getStreamNames");
-            List<String> streamNames = jsm.getStreamNames();
-            printObject(streamNames);
+            // System.out.println("----------\n4.2 getStreamNames");
+            // List<String> streamNames = jsm.getStreamNames();
+            // printObject(streamNames);
 
             System.out.println("----------\n4.2 getStreamNames");
             streamInfos = jsm.getStreams();
             NatsJsUtils.printStreamInfoList(streamInfos);
+
+            if(!_purge) return;
 
             // 5. Purge a stream of it's messages
             System.out.println("----------\n5. Purge stream");
