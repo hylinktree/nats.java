@@ -47,6 +47,7 @@ public class NatsJsManageStreams {
     private static final String SUBJECT4 = "manage-subject4";
 
     public static boolean _purge = false;
+    public static StorageType _jet_typ = StorageType.Memory;
     public static void main(String[] args) {
         // args = "-s hpcargo:4222".split(" ");
         args = ExampleArgs.hpcargo_args;
@@ -81,7 +82,7 @@ public class NatsJsManageStreams {
                         // .maxBytes(...)
                         // .maxAge(...)
                         // .maxMsgSize(...)
-                        .storageType(StorageType.File)
+                        .storageType(_jet_typ)
                         // .replicas(...)
                         // .noAck(...)
                         // .template(...)
@@ -108,7 +109,8 @@ public class NatsJsManageStreams {
                 // 3. Create (add) another stream with 2 subjects
                 System.out.println("----------\n3. Configure And Add Stream 2");
                 streamConfig = StreamConfiguration.builder() //
-                        .name(STREAM2).storageType(StorageType.File) //
+                        .name(STREAM2) //
+                        .storageType(_jet_typ) //
                         .subjects(SUBJECT3, SUBJECT4) //
                         .build();
                 streamInfo = jsm.addStream(streamConfig);
@@ -137,9 +139,9 @@ public class NatsJsManageStreams {
             // List<String> streamNames = jsm.getStreamNames();
             // printObject(streamNames);
 
-            System.out.println("----------\n4.2 getStreamNames");
-            streamInfos = jsm.getStreams();
-            NatsJsUtils.printStreamInfoList(streamInfos);
+            // System.out.println("----------\n4.2 getStreamNames");
+            // streamInfos = jsm.getStreams();
+            // NatsJsUtils.printStreamInfoList(streamInfos);
 
             if(!_purge) return;
 
