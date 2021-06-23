@@ -58,7 +58,7 @@ public class NatsJsPullSubBatchSize {
         ExampleArgs exArgs = ExampleArgs.builder()
                 .defaultStream(STREAM1)
                 .defaultSubject(SUBJECT1)
-                .defaultDurable("pull-durable")
+                .defaultDurable("pull-durable-merry")
                 .defaultMsgCount(99)
                 //.uniqueify() // uncomment to be able to re-run without re-starting server
                 .build(args, usageString);
@@ -82,9 +82,14 @@ public class NatsJsPullSubBatchSize {
             nc.flush(Duration.ofSeconds(1));
 
             int red = 0;
-            while (red < exArgs.msgCount) {
-                sub.pull(10);
-                Message m = sub.nextMessage(Duration.ofSeconds(1)); // first message
+            int batchsize = 33;
+            int interval = 3;
+            // while (red < exArgs.msgCount) 
+            for(;;)
+            {
+                sub.pull(batchsize);
+                Message m = sub.nextMessage(Duration.ofSeconds(interval)); // first message
+                if(m == null) System.out.println("wait timeout");
                 while (m != null) {
                     if (m.isJetStream()) {
                         // process message

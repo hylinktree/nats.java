@@ -121,9 +121,15 @@ public class NatsJsManageStreams {
             // 4.1 getStreamInfo on a specific stream
             // 4.2 get a list of all streams
             // 4.3 get a list of StreamInfo's for all streams
-            System.out.println("----------\n4.1 getStreamInfo");
+            int num = 1000;
+            
+            Long ta = System.currentTimeMillis();
+            System.out.println("----------\n4.1 getStreamInfo " + Integer.toString(num));
             // publish(nc, SUBJECT1, 5);
-            publish(nc.jetStream(), SUBJECT1, "Helo", 10, true);
+            publish(nc.jetStream(), SUBJECT1, "Helo", num, false);
+            Long tb = System.currentTimeMillis();
+            Long delta = tb - ta;
+            System.out.println("----------\n4.1 getStreamInfo.fin " + delta.toString());
             streamInfo = jsm.getStreamInfo(STREAM1);
             NatsJsUtils.printStreamInfo(streamInfo);
 
