@@ -1,4 +1,4 @@
-FROM alpine-jav
+FROM al-jav
 
 WORKDIR /opt
 
