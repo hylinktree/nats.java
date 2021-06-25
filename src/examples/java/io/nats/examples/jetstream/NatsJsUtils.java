@@ -72,6 +72,10 @@ public class NatsJsUtils {
         return si;
     }
 
+    public static StreamInfo createOrUpdateStream(Connection nc, String stream, StorageType jstyp, String... subjects) throws IOException, JetStreamApiException {
+        return createOrUpdateStream(nc.jetStreamManagement(), stream, jstyp, subjects);
+    }
+
     public static StreamInfo createOrUpdateStream(Connection nc, String stream, String... subjects) throws IOException, JetStreamApiException {
         return createOrUpdateStream(nc.jetStreamManagement(), stream, StorageType.Memory, subjects);
     }

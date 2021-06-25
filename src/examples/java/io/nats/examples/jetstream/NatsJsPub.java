@@ -18,6 +18,7 @@ import io.nats.client.JetStream;
 import io.nats.client.Message;
 import io.nats.client.Nats;
 import io.nats.client.api.PublishAck;
+import io.nats.client.api.StorageType;
 import io.nats.client.impl.NatsMessage;
 import io.nats.examples.ExampleArgs;
 import io.nats.examples.ExampleUtils;
@@ -28,9 +29,9 @@ import java.nio.charset.StandardCharsets;
  * This example will demonstrate JetStream publishing.
  */
 public class NatsJsPub {
-    static final String usageString = "\nUsage: java -cp <classpath> NatsJsPub [-s server] [-strm stream] [-sub subject] [-mcnt msgCount] [-m messageWords+] [-r headerKey:headerValue]*"
+    static final String usageString = "\nUsage: java -cp <classpath> NatsJsPub [-s server] [-strm stream] [-sub subject] [-mcnt msgCount] [-mlen msgLength] [-m messageWords+] [-r headerKey:headerValue]*"
             + "\n\nDefault Values:" + "\n   [-strm stream]    example-stream" + "\n   [-sub subject]    example-subject"
-            + "\n   [-mcnt msgCount]  10" + "\n   [-m messageWords+] hello" + "\n   [-mn msgLength] 32"
+            + "\n   [-mcnt msgCount]  10" + "\n   [-m messageWords+] hello" + "\n   [-mlen msgLength] 32"
             + "\n\nRun Notes:" + "\n   - msg_count < 1 is the same as 1" + "\n   - headers are optional"
             + "\n\nUse tls:// or opentls:// to require tls, via the Default SSLContext\n"
             + "\nSet the environment variable NATS_NKEY to use challenge response authentication by setting a file containing your private key.\n"
@@ -52,7 +53,7 @@ public class NatsJsPub {
             JetStream js = nc.jetStream();
 
             // See NatsJsManagement for examples on how to create the stream
-            NatsJsUtils.createOrUpdateStream(nc, exArgs.stream, exArgs.subject);
+            NatsJsUtils.createOrUpdateStream(nc, exArgs.stream, StorageType.File, exArgs.subject);
 
             int stop = exArgs.msgCount < 2 ? 2 : exArgs.msgCount + 1;
             Message msg = NatsMessage.builder().subject(exArgs.subject).headers(exArgs.headers)
