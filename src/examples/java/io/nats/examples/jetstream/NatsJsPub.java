@@ -58,6 +58,7 @@ public class NatsJsPub {
             Message msg = NatsMessage.builder().subject(exArgs.subject).headers(exArgs.headers)
                     // .data(data, StandardCharsets.UTF_8)
                     .data(new byte[exArgs.msgLength]).build();
+            int mod = 10000;
             for (int x = 1; x < stop; x++) {
                 // make unique message data if you want more than 1 message
                 // String data = exArgs.msgCount < 2 ? exArgs.message : exArgs.message + "-" +
@@ -79,7 +80,8 @@ public class NatsJsPub {
                 PublishAck pa = js.publish(msg);
                 // System.out.printf("Published message %s on subject %s, stream %s, seqno
                 // %d.\n", data, exArgs.subject,
-                System.out.printf("Published message , seqno %d.\n", pa.getSeqno());
+                if ((x % mod) == 1)
+                    System.out.printf("Published message.%d , seqno %d.\n", x, pa.getSeqno());
             }
         } catch (Exception e) {
             e.printStackTrace();
