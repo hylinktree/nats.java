@@ -25,20 +25,18 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Implements a benchmark more like the .net client that loops over a number
- * of scenarios benchmarking each one. This class hard codes most settings to minimize
- * boilerplate and focus on the nats client code (plus measurement).
+ * Implements a benchmark more like the .net client that loops over a number of
+ * scenarios benchmarking each one. This class hard codes most settings to
+ * minimize boilerplate and focus on the nats client code (plus measurement).
  * 
- * Each benchmark is implemented in its own class, and this main class just builds instances
- * and runs them.
+ * Each benchmark is implemented in its own class, and this main class just
+ * builds instances and runs them.
  */
-public class NatsAutoBench {
-    static final String usageString =
-            "\nUsage: java -cp <classpath> NatsAutoBench" +
-                    "\n[serverURL] [help] [tiny|small|med|large] [conscrypt] [jsfile]" +
-                    "\n[PubOnly] [PubSub] [PubDispatch] [ReqReply] [Latency] " +
-                    "\n[JsPubSync] [JsPubAsync] [JsSub] [JsPubRounds]" +
-                    "[-lcsv <filespec>] \n\n"
+public class mybench {
+    static final String usageString = "\nUsage: java -cp <classpath> NatsAutoBench"
+            + "\n[serverURL] [help] [tiny|small|med|large] [conscrypt] [jsfile]"
+            + "\n[PubOnly] [PubSub] [PubDispatch] [ReqReply] [Latency] "
+            + "\n[JsPubSync] [JsPubAsync] [JsSub] [JsPubRounds]" + "[-lcsv <filespec>] \n\n"
             + "If no specific test name(s) are supplied all will be run, otherwise only supplied tests will be run."
             + "\n\nUse tls:// or opentls:// to require tls, via the Default SSLContext\n"
             + "\n\ntiny, small and med reduce the number of messages used for tests, which can help on slower machines\n";
@@ -46,7 +44,7 @@ public class NatsAutoBench {
     public static void main(String[] args) {
 
         // args = (ExampleArgs.hpcargo_str + "PubSub").split(" ");
-        
+
         // TO RUN WITH ARGS FROM IDE, ADD A LINE LIKE THESE
         // args = "myhost:4222 med".split(" ");
         // args = "small PubOnly".split(" ");
@@ -60,18 +58,20 @@ public class NatsAutoBench {
         System.out.printf("Connecting to NATS server at %s\n", a.server);
 
         try {
-            Options.Builder builder = new Options.Builder().
-                                                    server(a.server).
-                                                    connectionTimeout(Duration.ofSeconds(1)).
-                                                    noReconnect();
+            Options.Builder builder = new Options.Builder().server(a.server).connectionTimeout(Duration.ofSeconds(1))
+                    .noReconnect();
 
             /**
-             * The conscrypt flag is provided for testing with the conscrypt jar. Using it through reflection is
-             * deprecated but allows the library to ship without a dependency. Using conscrypt should only require the
-             * jar plus the flag. For example, to run after building locally and using the test cert files:
-             * java -cp ./build/libs/jnats-2.11.5-SNAPSHOT-examples.jar:./build/libs/jnats-2.11.5-SNAPSHOT-fat.jar:<path to conscrypt.jar> \
-             * -Djavax.net.ssl.keyStore=src/test/resources/keystore.jks -Djavax.net.ssl.keyStorePassword=password \
-             * -Djavax.net.ssl.trustStore=src/test/resources/truststore.jks -Djavax.net.ssl.trustStorePassword=password \
+             * The conscrypt flag is provided for testing with the conscrypt jar. Using it
+             * through reflection is deprecated but allows the library to ship without a
+             * dependency. Using conscrypt should only require the jar plus the flag. For
+             * example, to run after building locally and using the test cert files: java
+             * -cp
+             * ./build/libs/jnats-2.11.5-SNAPSHOT-examples.jar:./build/libs/jnats-2.11.5-SNAPSHOT-fat.jar:<path
+             * to conscrypt.jar> \ -Djavax.net.ssl.keyStore=src/test/resources/keystore.jks
+             * -Djavax.net.ssl.keyStorePassword=password \
+             * -Djavax.net.ssl.trustStore=src/test/resources/truststore.jks
+             * -Djavax.net.ssl.trustStorePassword=password \
              * io.nats.examples.autobench.NatsAutoBench tls://localhost:4443 med conscrypt
              */
             if (a.conscrypt) {
@@ -80,19 +80,19 @@ public class NatsAutoBench {
             }
 
             if (a.server.startsWith("tls")) {
-                System.out.println("Security Provider - "+ SSLContext.getDefault().getProvider().getInfo());
+                System.out.println("Security Provider - " + SSLContext.getDefault().getProvider().getInfo());
             }
-                    
-            Options connectOptions = builder.build();                   
+
+            Options connectOptions = builder.build();
             List<AutoBenchmark> tests = buildTestList(a);
 
             System.out.println("Running warmup");
             runWarmup(connectOptions);
 
-            System.out.printf("Current memory usage is %s / %s / %s free/total/max\n", 
-                                AutoBenchmark.humanBytes(Runtime.getRuntime().freeMemory()),
-                                AutoBenchmark.humanBytes(Runtime.getRuntime().totalMemory()),
-                                AutoBenchmark.humanBytes(Runtime.getRuntime().maxMemory()));
+            System.out.printf("Current memory usage is %s / %s / %s free/total/max\n",
+                    AutoBenchmark.humanBytes(Runtime.getRuntime().freeMemory()),
+                    AutoBenchmark.humanBytes(Runtime.getRuntime().totalMemory()),
+                    AutoBenchmark.humanBytes(Runtime.getRuntime().maxMemory()));
             System.out.print("Executing tests ");
             for (AutoBenchmark test : tests) {
                 test.execute(connectOptions);
@@ -108,7 +108,7 @@ public class NatsAutoBench {
             }
             System.out.println();
             System.out.println();
-            
+
             Class<? extends AutoBenchmark> lastTestClass = null;
             AutoBenchmark lastTest = null;
             for (AutoBenchmark test : tests) {
@@ -129,10 +129,10 @@ public class NatsAutoBench {
             }
 
             System.out.println();
-            System.out.printf("Final memory usage is %s / %s / %s free/total/max\n", 
-                                AutoBenchmark.humanBytes(Runtime.getRuntime().freeMemory()),
-                                AutoBenchmark.humanBytes(Runtime.getRuntime().totalMemory()),
-                                AutoBenchmark.humanBytes(Runtime.getRuntime().maxMemory()));
+            System.out.printf("Final memory usage is %s / %s / %s free/total/max\n",
+                    AutoBenchmark.humanBytes(Runtime.getRuntime().freeMemory()),
+                    AutoBenchmark.humanBytes(Runtime.getRuntime().totalMemory()),
+                    AutoBenchmark.humanBytes(Runtime.getRuntime().maxMemory()));
         } catch (Exception exp) {
             exp.printStackTrace();
         }
@@ -143,7 +143,7 @@ public class NatsAutoBench {
         warmup.execute(connectOptions);
 
         if (warmup.getException() != null) {
-            System.out.println("Encountered exception "+warmup.getException().getMessage());
+            System.out.println("Encountered exception " + warmup.getException().getMessage());
             System.exit(-1);
         }
     }
@@ -173,20 +173,21 @@ public class NatsAutoBench {
             if (a.jsPubAsync || !a.jsPubSync) {
                 a.jsPubAsync = true; // have to publish somewhere, async is faster
                 jsPubAsyncSaveForJsSub.set(true);
-            }
-            else {
+            } else {
                 jsPubSyncSaveForJsSub.set(false);
             }
         }
 
         if (a.allTests || a.jsPubSync) {
             addTests(a.baseMsgs, a.maxSize, tests, sizes, msgsMultiple,
-                    (msize, mcnt) -> new JsPubBenchmark("JsPubSync " + msize, mcnt, msize, a.jsFile, true, jsPubSyncSaveForJsSub.get()));
+                    (msize, mcnt) -> new JsPubBenchmark("JsPubSync " + msize, mcnt, msize, a.jsFile, true,
+                            jsPubSyncSaveForJsSub.get()));
         }
 
         if (a.allTests || a.jsPubAsync) {
             addTests(a.baseMsgs, a.maxSize, tests, sizes, msgsMultiple,
-                    (msize, mcnt) -> new JsPubBenchmark("JsPubAsync " + msize, mcnt, msize, a.jsFile, false, jsPubAsyncSaveForJsSub.get()));
+                    (msize, mcnt) -> new JsPubBenchmark("JsPubAsync " + msize, mcnt, msize, a.jsFile, false,
+                            jsPubAsyncSaveForJsSub.get()));
         }
 
         if (a.allTests || a.jsSub) {
@@ -194,27 +195,33 @@ public class NatsAutoBench {
                     (msize, mcnt) -> new JsSubBenchmark("JsSub " + msize, mcnt, msize));
         }
 
-        if (a.allTests || a.jsPubRounds) {
-            addTestsWithRounds(a.baseMsgs, a.maxSize, tests, sizes, msgsMultiple,
-                    (msize, mcnt, rsize) -> new JsPubAsyncRoundsBenchmark("JsPubAsyncRounds " + msize + "," + rsize, mcnt, msize, a.jsFile, rsize));
+        if (a.allTests || a.jsSubOnly) {
+            addTests(a.baseMsgs, a.maxSize, tests, sizes, msgsMultiple,
+                    (msize, mcnt) -> new JsSubBenchmark("JsSub " + msize, mcnt, msize));
         }
 
+        if (a.allTests || a.jsPubRounds) {
+            addTestsWithRounds(a.baseMsgs, a.maxSize, tests, sizes, msgsMultiple,
+                    (msize, mcnt, rsize) -> new JsPubAsyncRoundsBenchmark("JsPubAsyncRounds " + msize + "," + rsize,
+                            mcnt, msize, a.jsFile, rsize));
+        }
 
         if (a.allTests || a.reqReply) {
-                addRequestReplyTests(a.baseMsgs, a.maxSize, tests, sizes, msgsDivider,
+            addRequestReplyTests(a.baseMsgs, a.maxSize, tests, sizes, msgsDivider,
                     (msize, mcnt) -> new ReqReplyBenchmark("ReqReply " + msize, mcnt, msize));
         }
 
         if (a.allTests || a.latency) {
-                addLatencyTests(a.latencyMsgs, a.maxSize, tests, sizes,
+            addLatencyTests(a.latencyMsgs, a.maxSize, tests, sizes,
                     (msize, mcnt) -> new LatencyBenchmark("Latency " + msize, mcnt, msize, a.lcsv));
         }
 
         return tests;
     }
 
-    private static void addTests(int baseMsgs, long maxSize, List<AutoBenchmark> tests, int[] sizes, long[] msgsMultiple, AutoBenchmarkConstructor abc) {
-        for(int i = 0; i< sizes.length; i++) {
+    private static void addTests(int baseMsgs, long maxSize, List<AutoBenchmark> tests, int[] sizes,
+            long[] msgsMultiple, AutoBenchmarkConstructor abc) {
+        for (int i = 0; i < sizes.length; i++) {
             int size = sizes[i];
             long msgMult = msgsMultiple[i];
 
@@ -226,7 +233,8 @@ public class NatsAutoBench {
         }
     }
 
-    private static void addLatencyTests(int latencyMsgs, long maxSize, List<AutoBenchmark> tests, int[] sizes, AutoBenchmarkConstructor abc) {
+    private static void addLatencyTests(int latencyMsgs, long maxSize, List<AutoBenchmark> tests, int[] sizes,
+            AutoBenchmarkConstructor abc) {
         for (int size : sizes) {
             if (size > maxSize) {
                 break;
@@ -235,14 +243,17 @@ public class NatsAutoBench {
         }
     }
 
-    // Request reply is a 4 message trip, and runs the full loop before sending another message
-    // so we run fewer because the client cannot batch any socket calls to the server together
-    private static void addRequestReplyTests(int baseMsgs, long maxSize, List<AutoBenchmark> tests, int[] sizes, int[] msgsDivider, AutoBenchmarkConstructor abc) {
-        for(int i = 0; i< sizes.length; i++) {
+    // Request reply is a 4 message trip, and runs the full loop before sending
+    // another message
+    // so we run fewer because the client cannot batch any socket calls to the
+    // server together
+    private static void addRequestReplyTests(int baseMsgs, long maxSize, List<AutoBenchmark> tests, int[] sizes,
+            int[] msgsDivider, AutoBenchmarkConstructor abc) {
+        for (int i = 0; i < sizes.length; i++) {
             int size = sizes[i];
             int msgDivide = msgsDivider[i];
 
-            if(size > maxSize) {
+            if (size > maxSize) {
                 break;
             }
 
@@ -250,8 +261,9 @@ public class NatsAutoBench {
         }
     }
 
-    private static void addTestsWithRounds(int baseMsgs, long maxSize, List<AutoBenchmark> tests, int[] sizes, long[] msgsMultiple, AutoBenchmarkRoundSizeConstructor abrsc) {
-        for(int i = 0; i< sizes.length; i++) {
+    private static void addTestsWithRounds(int baseMsgs, long maxSize, List<AutoBenchmark> tests, int[] sizes,
+            long[] msgsMultiple, AutoBenchmarkRoundSizeConstructor abrsc) {
+        for (int i = 0; i < sizes.length; i++) {
             int size = sizes[i];
             long msgMult = msgsMultiple[i];
 
@@ -267,10 +279,10 @@ public class NatsAutoBench {
         }
     }
 
-    static int[] sizes =         {0,     8,  32, 256, 512, 1024, 4096, 8192};
-    static long[] msgsMultiple = {100, 100, 100, 100, 100,   10,    5,    1};
-    static int[] msgsDivider =   {5,     5,  10,  10,  10,   10,   10,   10};
-    static int[] roundSize =     {10, 100, 200, 500, 1000};
+    static int[] sizes = { 0, 8, 32, 256, 512, 1024, 4096, 8192 };
+    static long[] msgsMultiple = { 100, 100, 100, 100, 100, 10, 5, 1 };
+    static int[] msgsDivider = { 5, 5, 10, 10, 10, 10, 10, 10 };
+    static int[] roundSize = { 10, 100, 200, 500, 1000 };
 
     interface AutoBenchmarkConstructor {
         AutoBenchmark construct(long messageSize, long messageCount);
@@ -298,6 +310,7 @@ public class NatsAutoBench {
         boolean jsSub = false;
         boolean jsPubRounds = false;
         boolean jsFile = false;
+        boolean jsSubOnly = false;
         String lcsv = null;
     }
 
@@ -363,6 +376,10 @@ public class NatsAutoBench {
                     case "jssub":
                         a.allTests = false;
                         a.jsSub = true;
+                        break;
+                    case "jssubonly":
+                        a.allTests = false;
+                        a.jsSubOnly = true;
                         break;
                     case "jspubrounds":
                         a.allTests = false;
