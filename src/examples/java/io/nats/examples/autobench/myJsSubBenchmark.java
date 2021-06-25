@@ -20,9 +20,9 @@ import io.nats.client.api.ConsumerConfiguration;
 import java.io.IOException;
 import java.time.Duration;
 
-public class JsSubBenchmark extends AutoBenchmark {
+public class myJsSubBenchmark extends AutoBenchmark {
 
-    public JsSubBenchmark(String name, long messageCount, long messageSize) {
+    public myJsSubBenchmark(String name, long messageCount, long messageSize) {
         super(name, messageCount, messageSize);
     }
 

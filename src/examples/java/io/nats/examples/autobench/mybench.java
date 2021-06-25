@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import io.nats.examples.autobench.myJsSubBenchmark;
 
 /**
  * Implements a benchmark more like the .net client that loops over a number of
@@ -197,7 +198,7 @@ public class mybench {
 
         if (a.allTests || a.jsSubOnly) {
             addTests(a.baseMsgs, a.maxSize, tests, sizes, msgsMultiple,
-                    (msize, mcnt) -> new JsSubBenchmark("JsSub " + msize, mcnt, msize));
+                    (msize, mcnt) -> new myJsSubBenchmark("myJsSub " + msize, mcnt, msize));
         }
 
         if (a.allTests || a.jsPubRounds) {
