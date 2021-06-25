@@ -35,6 +35,7 @@ public class NatsJsPub {
                     + "\n   [-sub subject]    example-subject"
                     + "\n   [-mcnt msgCount]  10"
                     + "\n   [-m messageWords+] hello"
+                    + "\n   [-mn msgLength] 32"
                     + "\n\nRun Notes:"
                     + "\n   - msg_count < 1 is the same as 1"
                     + "\n   - headers are optional"
@@ -73,7 +74,8 @@ public class NatsJsPub {
                 Message msg = NatsMessage.builder()
                         .subject(exArgs.subject)
                         .headers(exArgs.headers)
-                        .data(data, StandardCharsets.UTF_8)
+                        // .data(data, StandardCharsets.UTF_8)
+                        .data(new byte[exArgs.msgLength])
                         .build();
 
                 // Publish a message and print the results of the publish acknowledgement.

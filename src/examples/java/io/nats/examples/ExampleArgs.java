@@ -29,6 +29,7 @@ public class ExampleArgs {
     public String queue;
     public String message;
     public int msgCount = -1;
+    public int msgLength = 32;
     public int subCount = -1;
     public String stream = null;
     public String mirror = null;
@@ -134,6 +135,9 @@ public class ExampleArgs {
                 break;
             case "-mcnt":
                 msgCount = Integer.parseInt(value);
+                break;
+            case "-mlen":
+                msgLength = Integer.parseInt(value);
                 break;
             case "-scnt":
                 subCount = Integer.parseInt(value);
