@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  nats-test:
+    network_mode: host
+    image: nats-test
+    restart: "no"
+    entrypoint: ${RUNCMD}
+    deploy:
+      replicas: ${RUNNUM}
+    #entrypoint: /nats-server --name srvcargo -m 8222
+    #entrypoint: /nats-server -js --name srvcargo -m 8222 -DV
+    #entrypoint: /nats-server -js --name srvcargo -DV
+    # restart: always
+    # ports:
+    #    - "4222:4222"
+    #environment:
+    #  REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+    #volumes:
+    #        - ./jetstream:/tmp/nats/jetstream
+
+
