@@ -13,6 +13,8 @@
 
 package io.nats.examples;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.nats.client.*;
 
 import java.time.Duration;
@@ -163,4 +165,28 @@ public class ExampleUtils {
         }
         return sb.toString();
     }
+
+    public static void Sleep(long ms) {
+		try {
+			TimeUnit.MILLISECONDS.sleep(ms);
+		} catch (InterruptedException e) {
+			// e.printStackTrace();
+		}
+	}
+
+	public static String toJson(Object ob) {
+		return new GsonBuilder().setPrettyPrinting().create().toJson(ob);
+	}
+
+	public static String toJson(Object ob, boolean pretty) {
+		if (!pretty)
+			return new Gson().toJson(ob);
+		return new GsonBuilder().setPrettyPrinting().create().toJson(ob);
+	}
+
+	// <T> T fromJson(String json, Class<T> classOfT)
+	public static <T> T fromJson(String si, Class<T> classOfT) {
+		return new Gson().fromJson(si, classOfT);
+	}
+
 }
