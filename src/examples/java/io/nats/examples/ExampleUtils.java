@@ -46,11 +46,8 @@ public class ExampleUtils {
     }
 
     public static Options createExampleOptions(String server, boolean allowReconnect) throws Exception {
-        Options.Builder builder = new Options.Builder()
-                .server(server)
-                .connectionTimeout(Duration.ofSeconds(5))
-                .pingInterval(Duration.ofSeconds(10))
-                .reconnectWait(Duration.ofSeconds(1))
+        Options.Builder builder = new Options.Builder().server(server).connectionTimeout(Duration.ofSeconds(5))
+                .pingInterval(Duration.ofSeconds(10)).reconnectWait(Duration.ofSeconds(1))
                 .errorListener(new ErrorListener() {
                     public void exceptionOccurred(Connection conn, Exception exp) {
                         System.out.println("Exception " + exp.getMessage());
@@ -63,30 +60,29 @@ public class ExampleUtils {
                     public void slowConsumerDetected(Connection conn, Consumer consumer) {
                         System.out.println("Slow consumer");
                     }
-                })
-                .connectionListener((conn, type) -> System.out.println("Status change "+type));
+                }).connectionListener((conn, type) -> System.out.println("Status change " + type));
 
-            if (!allowReconnect) {
-                builder = builder.noReconnect();
-            } else {
-                builder = builder.maxReconnects(-1);
-            }
+        if (!allowReconnect) {
+            builder = builder.noReconnect();
+        } else {
+            builder = builder.maxReconnects(-1);
+        }
 
-            if (System.getenv("NATS_NKEY") != null && System.getenv("NATS_NKEY") != "") {
-                AuthHandler handler = new ExampleAuthHandler(System.getenv("NATS_NKEY"));
-                builder.authHandler(handler);
-            } else if (System.getenv("NATS_CREDS") != null && System.getenv("NATS_CREDS") != "") {
-                builder.authHandler(Nats.credentials(System.getenv("NATS_CREDS")));
-            }
+        if (System.getenv("NATS_NKEY") != null && System.getenv("NATS_NKEY") != "") {
+            AuthHandler handler = new ExampleAuthHandler(System.getenv("NATS_NKEY"));
+            builder.authHandler(handler);
+        } else if (System.getenv("NATS_CREDS") != null && System.getenv("NATS_CREDS") != "") {
+            builder.authHandler(Nats.credentials(System.getenv("NATS_CREDS")));
+        }
 
         return builder.build();
     }
 
-    // Publish:   [options] <subject> <message>
-    // Request:   [options] <subject> <message>
+    // Publish: [options] <subject> <message>
+    // Request: [options] <subject> <message>
 
     // Subscribe: [options] <subject> <msgCount>
-    // Reply:     [options] <subject> <msgCount>
+    // Reply: [options] <subject> <msgCount>
 
     public static ExampleArgs optionalServer(String[] args, String usageString) {
         ExampleArgs ea = new ExampleArgs(args, null, usageString);
@@ -149,9 +145,8 @@ public class ExampleUtils {
         for (int x = 0; x < hex.length(); x++) {
             char c = hex.charAt(x);
             if (c < 58) {
-                sb.append((char)(c+55));
-            }
-            else {
+                sb.append((char) (c + 55));
+            } else {
                 sb.append(c);
             }
         }
@@ -167,26 +162,39 @@ public class ExampleUtils {
     }
 
     public static void Sleep(long ms) {
-		try {
-			TimeUnit.MILLISECONDS.sleep(ms);
-		} catch (InterruptedException e) {
-			// e.printStackTrace();
-		}
-	}
+        try {
+            TimeUnit.MILLISECONDS.sleep(ms);
+        } catch (InterruptedException e) {
+            // e.printStackTrace();
+        }
+    }
 
-	public static String toJson(Object ob) {
-		return new GsonBuilder().setPrettyPrinting().create().toJson(ob);
-	}
+    public static String toJson(Object ob) {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(ob);
+    }
 
-	public static String toJson(Object ob, boolean pretty) {
-		if (!pretty)
-			return new Gson().toJson(ob);
-		return new GsonBuilder().setPrettyPrinting().create().toJson(ob);
-	}
+    public static String toJson(Object ob, boolean pretty) {
+        if (!pretty)
+            return new Gson().toJson(ob);
+        return new GsonBuilder().setPrettyPrinting().create().toJson(ob);
+    }
 
-	// <T> T fromJson(String json, Class<T> classOfT)
-	public static <T> T fromJson(String si, Class<T> classOfT) {
-		return new Gson().fromJson(si, classOfT);
-	}
+    // <T> T fromJson(String json, Class<T> classOfT)
+    public static <T> T fromJson(String si, Class<T> classOfT) {
+        return new Gson().fromJson(si, classOfT);
+    }
+
+    public static String Trace(Object... params) {
+        String so = "";
+        for (Object e : params) {
+            if (e == null)
+                so += "<nul>";
+            else
+                so += e.toString();
+        }
+        // so = _isoDateTimefmtter.print(LocalDateTime.now()) + "[" + prog + "] - " + so;
+        System.out.println(so);
+        return so;
+    }
 
 }

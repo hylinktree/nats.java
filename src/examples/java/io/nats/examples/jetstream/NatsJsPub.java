@@ -41,6 +41,7 @@ public class NatsJsPub {
     public static void main(String[] args) {
         ExampleArgs exArgs = ExampleArgs.builder().defaultStream("example-stream").defaultSubject("example-subject")
                 .defaultMessage("hello").defaultMsgCount(10).build(args, usageString);
+        
 
         String hdrNote = exArgs.hasHeaders() ? ", with " + exArgs.headers.size() + " header(s)" : "";
         System.out.printf("\nPublishing to %s%s. Server is %s\n\n", exArgs.subject, hdrNote, exArgs.server);
