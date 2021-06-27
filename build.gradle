@@ -51,7 +51,6 @@ repositories {
 
 dependencies {
     implementation 'net.i2p.crypto:eddsa:0.3.0'
-    compile 'com.google.code.gson:2.6.2'
     compile 'com.google.code.gson:gson:2.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     testImplementation 'io.nats:jnats-server-runner:1.0.7'
