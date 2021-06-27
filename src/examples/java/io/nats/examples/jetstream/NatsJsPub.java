@@ -41,9 +41,9 @@ public class NatsJsPub {
     public static void main(String[] args) {
         ExampleArgs exArgs = ExampleArgs.builder().defaultStream("example-stream").defaultSubject("example-subject")
                 .defaultMessage("hello").defaultMsgCount(10).build(args, usageString);
-        
 
-        ExampleUtils.Trace(ExampleUtils.toJson(args));
+        // ExampleUtils.sleep(1000);
+        ExampleUtils.Trace("args=", ExampleUtils.toJson(args));
         String hdrNote = exArgs.hasHeaders() ? ", with " + exArgs.headers.size() + " header(s)" : "";
         System.out.printf("\nPublishing to %s%s. Server is %s\n\n", exArgs.subject, hdrNote, exArgs.server);
 
@@ -61,7 +61,7 @@ public class NatsJsPub {
             Message msg = NatsMessage.builder().subject(exArgs.subject).headers(exArgs.headers)
                     // .data(data, StandardCharsets.UTF_8)
                     .data(new byte[exArgs.msgLength]).build();
-            int mod = 10000;
+            int mod = 30000;
             for (int x = 1; x < stop; x++) {
                 // make unique message data if you want more than 1 message
                 // String data = exArgs.msgCount < 2 ? exArgs.message : exArgs.message + "-" +

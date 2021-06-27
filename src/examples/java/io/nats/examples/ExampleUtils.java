@@ -19,6 +19,7 @@ import io.nats.client.*;
 
 import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class ExampleUtils {
 
@@ -161,13 +162,13 @@ public class ExampleUtils {
         return sb.toString();
     }
 
-    public static void Sleep(long ms) {
-        try {
-            TimeUnit.MILLISECONDS.sleep(ms);
-        } catch (InterruptedException e) {
-            // e.printStackTrace();
-        }
-    }
+    // public static void Sleep(long ms) {
+    //     try {
+    //         TimeUnit.MILLISECONDS.sleep(ms);
+    //     } catch (InterruptedException e) {
+    //         // e.printStackTrace();
+    //     }
+    // }
 
     public static String toJson(Object ob) {
         return new GsonBuilder().setPrettyPrinting().create().toJson(ob);
