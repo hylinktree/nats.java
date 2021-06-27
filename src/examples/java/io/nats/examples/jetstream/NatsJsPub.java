@@ -43,6 +43,7 @@ public class NatsJsPub {
                 .defaultMessage("hello").defaultMsgCount(10).build(args, usageString);
         
 
+        ExampleUtils.Trace(ExampleUtils.toJson(args));
         String hdrNote = exArgs.hasHeaders() ? ", with " + exArgs.headers.size() + " header(s)" : "";
         System.out.printf("\nPublishing to %s%s. Server is %s\n\n", exArgs.subject, hdrNote, exArgs.server);
 
